@@ -31,4 +31,7 @@ sliter med postgres databasen ettersom jeg ikke vet hva som skjer akkurat nå. B
 rett og slett sliter akkurat nå. Det er evig stress og jeg finner ikke ut av problemer. Må også tenke på de andre oppgavene rn. Prøvd å bruke AI til å hjelpe med å finne ut hva problem kan være og har startet å søke rundt på nettet, men vet forsatt ikke helt hva problemet er
 
 13:16
-jeg har laget veilledning for registrering og handling veldig kjapt og skal tilbake til å se på problemet jeg har med postgres...
+jeg har laget veilledning for registrering og handling veldig kjapt og skal tilbake til å se på problemet jeg har med postgres... copilot er gone, kan ikke bruke den lengre. 
+
+13:33
+har laget simpel gdpr.md og forsatt aner ikke hva som er problem med postgres. vet ikke om jeg får fikset problemet og det er sikkert en veldig enkel måte jeg bare ikke tenker på. Vurderer å endre hvordan jeg gjør det, men vil finne ut av hvorfor det ikke funker

@@ -1,3 +1,6 @@
+copilot er det som blir brukt som da bruker claude haiku 4.5
+
+
 11:40
 Bruker
 ------------------
