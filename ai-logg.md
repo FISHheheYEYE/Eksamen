@@ -1,5 +1,5 @@
 copilot er det som blir brukt som da bruker claude haiku 4.5
-
+svarene her ble brukt rett inn i koden for å spare tid. 
 
 11:40
 Bruker
