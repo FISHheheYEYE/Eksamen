@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "category": "Musiker",
+    "name": "Live Musikk - Trio",
+    "description": "En energisk musikktrio som spiller pop, jazz og festlåter. Perfekt for bryllup og større selskaper.",
+    "price": 4500,
+    "image": "https://via.placeholder.com/600x400?text=Musiker"
+  },
+  {
+    "id": 2,
+    "category": "Bordkort",
+    "name": "Personlige bordkort",
+    "description": "Elegante bordkort med navn og bordnummer. Designet for å gi et personlig preg til selskapet.",
+    "price": 85,
+    "image": "https://via.placeholder.com/600x400?text=Bordkort"
+  },
+  {
+    "id": 3,
+    "category": "Blomster",
+    "name": "Bukett med sesongblomster",
+    "description": "Fargerik bukett med sesongens fineste blomster og grønt. Passer til borddekor eller gaver.",
+    "price": 650,
+    "image": "https://via.placeholder.com/600x400?text=Blomster"
+  }
+]

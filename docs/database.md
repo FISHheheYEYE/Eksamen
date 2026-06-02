@@ -1,0 +1,1 @@
+lagde en database med bruk av postgresql plugin på vsc. tok inn server name, user name, database name og alt annet enn trenger. Jeg har problemer med databasen nå siden for en eller annen grunn funker ikke ting og jeg er ikke helt sikker. vurderer å la det vente og heller forklare løsning senere istedenfor å bli ferdig med det hvis jeg ikke blir ferdig før tiden er ute.

@@ -1,4 +1,4 @@
-vet ikke om kodelogg er riktig navn for denne filen, men jaja forblir det for nå hvertfall
+vet ikke om kodelogg er riktig navn for denne filen, men jaja forblir det for nå hvertfall(kanskje kan kalle dagbok...)
 
 Før eksamen
 Starter med å sette opp filene med det som var på forbredene. 
@@ -29,3 +29,6 @@ sliter med postgres databasen ettersom jeg ikke vet hva som skjer akkurat nå. B
 
 12:53
 rett og slett sliter akkurat nå. Det er evig stress og jeg finner ikke ut av problemer. Må også tenke på de andre oppgavene rn. Prøvd å bruke AI til å hjelpe med å finne ut hva problem kan være og har startet å søke rundt på nettet, men vet forsatt ikke helt hva problemet er
+
+13:16
+jeg har laget veilledning for registrering og handling veldig kjapt og skal tilbake til å se på problemet jeg har med postgres...
