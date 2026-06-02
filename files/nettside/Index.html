@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produktvisning</title>
+    <link rel="stylesheet" href="styke.css">
+</head>
+<body>
+    <header>
+        <h1>Produktvisning</h1>
+        <p>Dette er en enkel oversikt over produkter som kan representere musikere, bordkort og blomster. Innholdet er laget slik at det er enkelt å erstatte de statiske dataene med en database senere.</p>
+    </header>
+
+    <section class="note">
+        <strong>Databaseklar:</strong> Endre funksjonen <code>loadProducts()</code> til å hente fra en database-API på serveren, for eksempel <code>/api/products</code>.
+    </section>
+
+    <section class="products" id="products"></section>
+
+    <script>
+        const products = [
+            {
+                id: 1,
+                category: 'Musiker',
+                name: 'Live Musikk - Trio',
+                description: 'En energisk musikktrio som spiller pop, jazz og festlåter. Perfekt for bryllup og større selskaper.',
+                price: 4500,
+                image: 'https://via.placeholder.com/600x400?text=Musiker'
+            },
+            {
+                id: 2,
+                category: 'Bordkort',
+                name: 'Personlige bordkort',
+                description: 'Elegante bordkort med navn og bordnummer. Designet for å gi et personlig preg til selskapet.',
+                price: 85,
+                image: 'https://via.placeholder.com/600x400?text=Bordkort'
+            },
+            {
+                id: 3,
+                category: 'Blomster',
+                name: 'Bukett med sesongblomster',
+                description: 'Fargerik bukett med sesongens fineste blomster og grønt. Passer til borddekor eller gaver.',
+                price: 650,
+                image: 'https://via.placeholder.com/600x400?text=Blomster'
+            },
+            {
+                id: 4,
+                category: 'Musiker',
+                name: 'Solo-sanger',
+                description: 'Professionell soloartist med repertoar for både rolige og stemningsfulle øyeblikk.',
+                price: 2800,
+                image: 'https://via.placeholder.com/600x400?text=Solo+Musiker'
+            },
+            {
+                id: 5,
+                category: 'Bordkort',
+                name: 'Moderne akryl-bordkort',
+                description: 'Gjennomsiktige bordkort med moderne typografi. Lett å personliggjøre med navn og farget tilpasning.',
+                price: 120,
+                image: 'https://via.placeholder.com/600x400?text=Akryl+Bordkort'
+            },
+            {
+                id: 6,
+                category: 'Blomster',
+                name: 'Dekorasjon med roser',
+                description: 'Romantisk borddekorasjon med roser og delikate grønne elementer.',
+                price: 780,
+                image: 'https://via.placeholder.com/600x400?text=Roser'
+            }
+        ];
+
+        function createProductCard(product) {
+            const card = document.createElement('article');
+            card.className = 'product-card';
+
+            card.innerHTML = `
+                <img class="product-image" src="${product.image}" alt="${product.name}" />
+                <div class="product-content">
+                    <div class="product-category">${product.category}</div>
+                    <h2 class="product-title">${product.name}</h2>
+                    <p class="product-description">${product.description}</p>
+                    <div class="product-footer">
+                        <div class="product-price">${product.price} kr</div>
+                        <div class="product-actions">
+                            <button class="button" type="button">Vis mer</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        async function loadProducts() {
+            const container = document.getElementById('products');
+
+            // Når serveren er på plass, bytt denne statiske listen med et kall til databasen.
+            // Eksempel:
+            // const response = await fetch('/api/products');
+            // const products = await response.json();
+
+            const list = products;
+            container.innerHTML = '';
+            list.forEach(product => container.appendChild(createProductCard(product)));
+        }
+
+        loadProducts();
+    </script>
+</body>
+</html>
