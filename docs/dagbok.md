@@ -35,3 +35,6 @@ jeg har laget veilledning for registrering og handling veldig kjapt og skal tilb
 
 13:33
 har laget simpel gdpr.md og forsatt aner ikke hva som er problem med postgres. vet ikke om jeg får fikset problemet og det er sikkert en veldig enkel måte jeg bare ikke tenker på. Vurderer å endre hvordan jeg gjør det, men vil finne ut av hvorfor det ikke funker
+
+13:51
+går egentlig bare gjennom filene og ser på ting jeg har gjort og går gjennom det AI har gjort for å se om feilen ligger noe sted der. siden copilot slutta å funke så har jeg ikke brukt noe mer AI. det var veldig greit å bruke AI for tingene jeg tenkte kom til å bruke tid og for å lage baseplate. før jeg finner ut av postgres så ser jeg ikke så mye å endre på enda.

@@ -1,0 +1,2 @@
+brannmurregler tillater trafikk fra bedriftens subnett (192.168.1.0/24). den andre trafikk som blir sendt til admin siden blir blokkert.
+hvis en sier at admin siden er på en port og nettsiden er på en annen port så blir ip adresser fra subnettet tillat gjennom, men andre iper blir blokkert fra den porten, men begge er lov på nettsiden bare ikke admin siden
