@@ -1,3 +1,5 @@
+vet ikke om kodelogg er riktig navn for denne filen, men jaja forblir det for nå hvertfall
+
 Før eksamen
 Starter med å sette opp filene med det som var på forbredene. 
 Laster ned express, pg, mysql2 med hjelp av npm install.
@@ -16,3 +18,14 @@ har brukt AI til å lage en enkel nettside i starten for å ha noe å gå ut fra
 lag en enkel nettside hvor en kan se på produkter. Disse produktene er musikere, bordkort, blomster for nå. Det skal være plass til navn, beskrivelse, pris, bilde. Det skal være knytta opp til en database, men det skal ikke du. DU skal gjøre det enkelt å modifisere og sette inn til en database
 ---
 Skal endre og er ikke sikker på om jeg skal bruke det
+
+
+12:21
+Har fått nettside til å faktisk vise ettersom den ikke gjorde det i starten. Database er også satt opp ordentlig, men har ikke lagt noe inn i den enda. Har ikke sett på de andre oppgavene enda(noe jeg burde), men skal se på det snart(damn tiden går kjapt)
+
+
+12:44
+sliter med postgres databasen ettersom jeg ikke vet hva som skjer akkurat nå. Brukte postgresql extension på vsc for å lage den og virker som noe bs har skjedd. altså virker som noe er galt i noe jeg har gjort, men aner ikke hva det kan være eller hvorfor. Dette har fått meg litt for fokusert og egentlig litt stressa nå
+
+12:53
+rett og slett sliter akkurat nå. Det er evig stress og jeg finner ikke ut av problemer. Må også tenke på de andre oppgavene rn. Prøvd å bruke AI til å hjelpe med å finne ut hva problem kan være og har startet å søke rundt på nettet, men vet forsatt ikke helt hva problemet er

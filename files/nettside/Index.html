@@ -8,18 +8,23 @@
 </head>
 <body>
     <header>
-        <h1>Produktvisning</h1>
-        <p>Dette er en enkel oversikt over produkter som kan representere musikere, bordkort og blomster. Innholdet er laget slik at det er enkelt å erstatte de statiske dataene med en database senere.</p>
+        <div class="page-header">
+            <div>
+                <h1>Produktvisning</h1>
+                <p>Dette er en enkel oversikt over produkter som kan representere musikere, bordkort og blomster. Innholdet er laget slik at det er enkelt å erstatte de statiske dataene med en database senere.</p>
+            </div>
+            <a class="button" href="admin.html">Admin-side</a>
+        </div>
     </header>
 
     <section class="note">
-        <strong>Databaseklar:</strong> Endre funksjonen <code>loadProducts()</code> til å hente fra en database-API på serveren, for eksempel <code>/api/products</code>.
+        <strong>Databaseklar:</strong> Produktene hentes fra <code>/products</code>. Bytt gjerne ut strukturen med egen databaselogikk senere.
     </section>
 
     <section class="products" id="products"></section>
 
     <script>
-        const products = [
+        const fallbackProducts = [
             {
                 id: 1,
                 category: 'Musiker',
@@ -43,30 +48,6 @@
                 description: 'Fargerik bukett med sesongens fineste blomster og grønt. Passer til borddekor eller gaver.',
                 price: 650,
                 image: 'https://via.placeholder.com/600x400?text=Blomster'
-            },
-            {
-                id: 4,
-                category: 'Musiker',
-                name: 'Solo-sanger',
-                description: 'Professionell soloartist med repertoar for både rolige og stemningsfulle øyeblikk.',
-                price: 2800,
-                image: 'https://via.placeholder.com/600x400?text=Solo+Musiker'
-            },
-            {
-                id: 5,
-                category: 'Bordkort',
-                name: 'Moderne akryl-bordkort',
-                description: 'Gjennomsiktige bordkort med moderne typografi. Lett å personliggjøre med navn og farget tilpasning.',
-                price: 120,
-                image: 'https://via.placeholder.com/600x400?text=Akryl+Bordkort'
-            },
-            {
-                id: 6,
-                category: 'Blomster',
-                name: 'Dekorasjon med roser',
-                description: 'Romantisk borddekorasjon med roser og delikate grønne elementer.',
-                price: 780,
-                image: 'https://via.placeholder.com/600x400?text=Roser'
             }
         ];
 
@@ -94,15 +75,25 @@
 
         async function loadProducts() {
             const container = document.getElementById('products');
+            container.innerHTML = 'Laster produkter...';
 
-            // Når serveren er på plass, bytt denne statiske listen med et kall til databasen.
-            // Eksempel:
-            // const response = await fetch('/api/products');
-            // const products = await response.json();
-
-            const list = products;
-            container.innerHTML = '';
-            list.forEach(product => container.appendChild(createProductCard(product)));
+            try {
+                const response = await fetch('/products');
+                if (!response.ok) {
+                    throw new Error('Feil ved henting av produkter');
+                }
+                const products = await response.json();
+                container.innerHTML = '';
+                if (products.length === 0) {
+                    container.innerHTML = '<p>Ingen produkter funnet.</p>';
+                    return;
+                }
+                products.forEach(product => container.appendChild(createProductCard(product)));
+            } catch (error) {
+                console.error(error);
+                container.innerHTML = '';
+                fallbackProducts.forEach(product => container.appendChild(createProductCard(product)));
+            }
         }
 
         loadProducts();

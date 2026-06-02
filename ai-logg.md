@@ -78,3 +78,62 @@ AI
 ---------------------
 Ja, jeg har nå lagt til alle brukerforespørsler og svar fra denne samtalen i `ai-logg.md`.
 
+-------------------------------
+
+Bruker
+------------------
+jeg for forsatt cannot get()
+
+AI
+---------------------
+Fikset ved å legge til `express.static()` og root-rute i `files/server.js` som serverer `Index.html` på `/`.
+
+Bruker
+------------------
+skal ha admin bruker som kan legge inn ulike produkter. Tenker en admin page, sett det opp kjapt og enkelt som kan modifiseres senere
+
+AI
+---------------------
+Opprettet `files/nettside/admin.html` med enkelt skjema for å legge inn produkter.
+Lagt til API-ruter i `server.js`:
+- GET /products (henter alle produkter)
+- POST /products (opprett nytt produkt)
+Oppdaterte `Index.html` til å hente produkter fra `/products` og lagt til link til admin-siden.
+
+Bruker
+------------------
+kan du lage mine tables for meg for det jeg trenger så langt
+
+AI
+---------------------
+Opprettet `files/create_tables.sql` med:
+- `products` tabell
+- `users` tabell
+- `admin_users` tabell (forberedt for senere innlogging)
+Inkludert testdata for produkter.
+
+Bruker
+------------------
+jeg har brukt en extentsion på vsc for å lage postgres databasen, men den vil ikke funke. Det kom opp errror da jeg fikk exectua koden fordi noe ikke tillater connection eller noe. hva kan være problemet
+
+AI
+---------------------
+Mulige årsaker:
+- PostgreSQL-serveren kjører ikke
+- Feil port (bruker port 54829, men extension bruker mulig 5432)
+- Databasen `bryllup` eksisterer ikke
+- Feil bruker/passord i VS Code-extension
+
+Sjekk:
+1. Om PostgreSQL kjører: `docker ps`
+2. Om databasen eksisterer, opprett den hvis ikke
+3. At VS Code-extension har riktig innstillinger (host, port 54829, user=postgres, password=eksamen, database=bryllup)
+
+Bruker
+------------------
+oppdater ai-logg.md
+
+AI
+---------------------
+Lagt til alle nye spørsmål og svar fra denne samtalen i `ai-logg.md`.
+
