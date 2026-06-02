@@ -140,3 +140,111 @@ AI
 ---------------------
 Lagt til alle nye spørsmål og svar fra denne samtalen i `ai-logg.md`.
 
+-------------------------------
+
+Bruker
+------------------
+gå gjennom prosjektet mitt og se om du finner noe feil i koden. Om det er noe som kan få postgres til å ikke funke
+
+AI
+---------------------
+Fant flere problemer:
+- **KRITISK**: `server.js` brukte JSON-filer i stedet for PostgreSQL (kommentar sa "ENKEL VERSJON MED JSON-FILER")
+- `readProducts()` og `writeProducts()` brukte `fs.readFileSync/fs.writeFileSync` på `products.json`
+- API-rutene lagret ikke til databasen
+- `.env` bruker port `54829` (uvanlig, sjekk at PostgreSQL kjører på denne porten)
+- `.env` ligger i git-repo (allerede i `.gitignore` - OK)
+
+Bruker
+------------------
+gjør det du sa
+
+AI
+---------------------
+Oppdaterte `server.js` til å bruke PostgreSQL:
+- Importerte `pool` fra `db.js`
+- Fjernet `fs` og JSON-hjelpefunksjonene
+- GET `/products` kjører `SELECT * FROM products ORDER BY id`
+- POST `/products` kjører `INSERT INTO products (...)` med async/await
+- Lagt til error-handling for begge rutene
+- `.gitignore` hadde allerede `*.env` - ingen endring trengt
+- Testet serveren - den startet og meldte "Server kjører på http://localhost:3000"
+
+Bruker
+------------------
+kan ikke starte server fra root-mappen
+
+AI
+---------------------
+Du må være i `files/`-mappen siden `server.js` ligger der.
+Kjør: `cd files ; npm start`
+
+Bruker
+------------------
+hvorfor kan ikke produkt oprettes i admin page?
+
+AI
+---------------------
+Admin-siden returner 500 feil ved opprettelse.
+Årsak: `internalOnly` middleware blokkerte forespørselen fordi IP-adressen returneres som `::ffff:127.0.0.1` i stedet for `127.0.0.1`.
+Fikset middleware til å godta:
+- `192.168.1.*` (bedriftens nettverk)
+- `127.0.0.1` (IPv4 localhost)
+- `::1` (IPv6 localhost)
+- `::ffff:127.0.0.1` (IPv6-mapped IPv4 localhost)
+- `localhost` string
+
+Bruker
+------------------
+kan du oppdatere ai-logg.md med det vi har skrevet nå sammen. Ikke fjern noe som allerede er der
+
+AI
+---------------------
+Lagt til alle nye spørsmål og svar fra denne samtalen.
+
+-------------------------------
+
+Bruker
+------------------
+i admin page gjør at det altid er ett kryss i høyere gjørne av produktene og hvis man trykker på krysset så fjernes produktet
+
+AI
+---------------------
+Oppdaterer admin-siden og backend for å vise et slettekryss på hvert produktkort i admin-viewet.
+- Lagt til `DELETE /products/:id` i `server.js`
+- Lagt til `×`-knapp i `files/nettside/admin.html`
+- Lagt til styling for `.product-remove-button` i `files/nettside/styke.css`
+- Sletteknappen fjerner produktkortet fra siden og sender en slettingsforespørsel til backend.
+
+-------------------------------
+
+Bruker
+------------------
+popup er alitd på skjermen nå. det skal bare være da en trykker på vis mer
+
+AI
+---------------------
+Rettet modal-stylingen slik at popupen er skjult som standard og vises bare når man klikker `Vis mer`.
+- Lagt til `.modal[hidden] { display: none !important; }` i `files/nettside/styke.css`
+
+-------------------------------
+
+Bruker
+------------------
+oppdater ai-logg
+
+AI
+---------------------
+Lagt til den siste brukerforespørselen og mitt svar i `ai-logg.md`.
+
+-------------------------------
+
+Bruker
+------------------
+oppdater ai-logg med alt etter sist
+
+AI
+---------------------
+Oppdaterer `ai-logg.md` med alle tidligere hendelser som ikke var skrevet inn enda.
+
+

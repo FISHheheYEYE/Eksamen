@@ -38,3 +38,15 @@ har laget simpel gdpr.md og forsatt aner ikke hva som er problem med postgres. v
 
 13:51
 går egentlig bare gjennom filene og ser på ting jeg har gjort og går gjennom det AI har gjort for å se om feilen ligger noe sted der. siden copilot slutta å funke så har jeg ikke brukt noe mer AI. det var veldig greit å bruke AI for tingene jeg tenkte kom til å bruke tid og for å lage baseplate. før jeg finner ut av postgres så ser jeg ikke så mye å endre på enda.
+
+13:57
+startet vsc på nytt for å få copilot i gang igjen, skal få den til å se gjennom om den ser noe feil som jeg ikke har sett og hvis ikke bytter jeg bare over til sql og gir opp på postgres
+
+14:13
+jeg fant ut jeg bare er en idiot og alt funka. Jeg hadde glemt å lage databasen...
+
+14:28
+jeg føler meg ferdig med nettsiden for nå, endrer hvis jeg har mer tid etter jeg har gjort de andre oppgavene. Brukte AI på nettsiden for oppsett siden det tar tid så har ikke bevegd meg vekk fra baseplaten som var.
+
+14:46
+har fått det til å funke, men har ikke inlogging side eller noe sånt som jeg egentlig ville ha, brukte kanskje litt vleidg lang tid på å finne ut hva postgres problemet var. 

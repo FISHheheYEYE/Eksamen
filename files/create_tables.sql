@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS products (
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
+
 -- Eksempel-tabell for brukere. Serveren har en /users-rute som leser fra denne tabellen.
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
@@ -20,7 +21,7 @@ CREATE TABLE IF NOT EXISTS users (
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
--- Tabell for admin-brukere hvis du senere skal legge til innlogging.
+
 CREATE TABLE IF NOT EXISTS admin_users (
   id SERIAL PRIMARY KEY,
   username TEXT NOT NULL UNIQUE,
@@ -35,3 +36,6 @@ VALUES
   ('Musiker', 'Live Musikk - Trio', 'En energisk musikktrio som spiller pop, jazz og festlåter.', 4500.00, 'https://via.placeholder.com/600x400?text=Musiker'),
   ('Bordkort', 'Personlige bordkort', 'Elegante bordkort med navn og bordnummer.', 85.00, 'https://via.placeholder.com/600x400?text=Bordkort'),
   ('Blomster', 'Bukett med sesongblomster', 'Fargerik bukett med sesongens fineste blomster og grønt.', 650.00, 'https://via.placeholder.com/600x400?text=Blomster');
+
+
+

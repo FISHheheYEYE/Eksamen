@@ -1,44 +1,18 @@
 // server.js
 const path = require('path');
 const express = require('express');
-const fs = require('fs');
-
-// ENKEL VERSJON MED JSON-FILER (uten PostgreSQL)
-// Denne versjonen lagrer produkter i products.json i stedet for database
-// Når du får PostgreSQL til å fungere, kan du bytte til db.js
+const pool = require('./db');
 
 const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'nettside')));
 
-const PRODUCTS_FILE = path.join(__dirname, 'products.json');
-
-// Hjelp-funksjon for å lese produkter fra JSON
-function readProducts() {
-  try {
-    const data = fs.readFileSync(PRODUCTS_FILE, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('Feil ved lesing av produkter:', error);
-    return [];
-  }
-}
-
-// Hjelp-funksjon for å lagre produkter til JSON
-function writeProducts(products) {
-  try {
-    fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(products, null, 2), 'utf8');
-  } catch (error) {
-    console.error('Feil ved lagring av produkter:', error);
-  }
-}
-
 // Middleware: Kun intern tilgang til admin
 function internalOnly(req, res, next) {
   const ip = req.ip || req.connection.remoteAddress;
   
-  // Juster subnettet til bedriftens nettverk
-  if (ip.startsWith('192.168.1.') || ip === '127.0.0.1' || ip === '::1') {
+  // Godtar localhost og bedriftens nettverk
+  if (ip.startsWith('192.168.1.') || ip === '127.0.0.1' || ip === '::1' || ip.includes('127.0.0.1') || ip === 'localhost') {
     return next();
   }
 
@@ -49,41 +23,60 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'nettside', 'Index.html'));
 });
 
-// Product API: hent produkter (fra JSON-fil)
-app.get('/products', (req, res) => {
-  const products = readProducts();
-  res.json(products);
+// Product API: hent produkter (fra PostgreSQL)
+app.get('/products', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM products ORDER BY id');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Feil ved henting av produkter:', error);
+    res.status(500).json({ error: 'Feil ved henting av produkter' });
+  }
 });
 
 // Product API: opprett nytt produkt (kun fra internt nettverk)
-app.post('/products', internalOnly, (req, res) => {
+app.post('/products', internalOnly, async (req, res) => {
   const { category, name, description, price, image } = req.body;
 
   if (!category || !name || !description || !price) {
     return res.status(400).json({ error: 'Manglende obligatoriske felt' });
   }
 
-  const products = readProducts();
-  const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+  try {
+    const result = await pool.query(
+      'INSERT INTO products (category, name, description, price, image) VALUES ($1, $2, $3, $4, $5) RETURNING id',
+      [category, name, description, Number(price), image || 'https://via.placeholder.com/600x400?text=Produkt']
+    );
 
-  const newProduct = {
-    id: newId,
-    category,
-    name,
-    description,
-    price: Number(price),
-    image: image || 'https://via.placeholder.com/600x400?text=Produkt'
-  };
+    res.status(201).json({ id: result.rows[0].id, message: 'Produkt lagt til' });
+  } catch (error) {
+    console.error('Feil ved opprettelse av produkt:', error);
+    res.status(500).json({ error: 'Feil ved opprettelse av produkt' });
+  }
+});
 
-  products.push(newProduct);
-  writeProducts(products);
+// Product API: slett produkt (kun fra internt nettverk)
+app.delete('/products/:id', internalOnly, async (req, res) => {
+  const productId = Number(req.params.id);
 
-  res.status(201).json({ id: newId, message: 'Produkt lagt til' });
+  if (!productId || Number.isNaN(productId)) {
+    return res.status(400).json({ error: 'Ugyldig produkt-ID' });
+  }
+
+  try {
+    const result = await pool.query('DELETE FROM products WHERE id = $1 RETURNING id', [productId]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Produkt ikke funnet' });
+    }
+    res.json({ id: result.rows[0].id, message: 'Produkt slettet' });
+  } catch (error) {
+    console.error('Feil ved sletting av produkt:', error);
+    res.status(500).json({ error: 'Feil ved sletting av produkt' });
+  }
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server kjører på http://localhost:${PORT}`);
-  console.log('Produkter lagres i: products.json');
-  console.log('(Når PostgreSQL fungerer, can du bytte til database)');
+  console.log('Produkter lagres i PostgreSQL-databasen');
 });

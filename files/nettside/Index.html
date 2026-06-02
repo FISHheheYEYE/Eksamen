@@ -11,17 +11,26 @@
         <div class="page-header">
             <div>
                 <h1>Produktvisning</h1>
-                <p>Dette er en enkel oversikt over produkter som kan representere musikere, bordkort og blomster. Innholdet er laget slik at det er enkelt å erstatte de statiske dataene med en database senere.</p>
+                <p>Dette er enkel oversikt for produkter som er på siden</p>
             </div>
             <a class="button" href="admin.html">Admin-side</a>
         </div>
     </header>
 
-    <section class="note">
-        <strong>Databaseklar:</strong> Produktene hentes fra <code>/products</code>. Bytt gjerne ut strukturen med egen databaselogikk senere.
-    </section>
 
     <section class="products" id="products"></section>
+
+    <div id="productModal" class="modal" hidden>
+        <div class="modal-content">
+            <button id="closeModal" class="modal-close" type="button">×</button>
+            <div class="modal-body">
+                <h2 id="modalTitle"></h2>
+                <p id="modalCategory"></p>
+                <p id="modalDescription"></p>
+                <p id="modalPrice"></p>
+            </div>
+        </div>
+    </div>
 
     <script>
         const fallbackProducts = [
@@ -55,27 +64,81 @@
             const card = document.createElement('article');
             card.className = 'product-card';
 
-            card.innerHTML = `
-                <img class="product-image" src="${product.image}" alt="${product.name}" />
-                <div class="product-content">
-                    <div class="product-category">${product.category}</div>
-                    <h2 class="product-title">${product.name}</h2>
-                    <p class="product-description">${product.description}</p>
-                    <div class="product-footer">
-                        <div class="product-price">${product.price} kr</div>
-                        <div class="product-actions">
-                            <button class="button" type="button">Vis mer</button>
-                        </div>
-                    </div>
-                </div>
-            `;
+            const img = document.createElement('img');
+            img.className = 'product-image';
+            img.src = product.image;
+            img.alt = product.name;
+            card.appendChild(img);
+
+            const content = document.createElement('div');
+            content.className = 'product-content';
+
+            const category = document.createElement('div');
+            category.className = 'product-category';
+            category.textContent = product.category;
+
+            const title = document.createElement('h2');
+            title.className = 'product-title';
+            title.textContent = product.name;
+
+            const description = document.createElement('p');
+            description.className = 'product-description';
+            description.textContent = product.description;
+
+            const footer = document.createElement('div');
+            footer.className = 'product-footer';
+
+            const price = document.createElement('div');
+            price.className = 'product-price';
+            price.textContent = `${product.price} kr`;
+
+            const actions = document.createElement('div');
+            actions.className = 'product-actions';
+
+            const button = document.createElement('button');
+            button.className = 'button';
+            button.type = 'button';
+            button.textContent = 'Vis mer';
+            button.addEventListener('click', () => openProductModal(product));
+
+            actions.appendChild(button);
+            footer.appendChild(price);
+            footer.appendChild(actions);
+            content.appendChild(category);
+            content.appendChild(title);
+            content.appendChild(description);
+            content.appendChild(footer);
+            card.appendChild(content);
 
             return card;
         }
 
+        function openProductModal(product) {
+            const modal = document.getElementById('productModal');
+            document.getElementById('modalTitle').textContent = product.name || '';
+            document.getElementById('modalCategory').textContent = product.category ? `Kategori: ${product.category}` : '';
+            document.getElementById('modalDescription').textContent = product.description || '';
+            document.getElementById('modalPrice').textContent = product.price ? `Pris: ${product.price} kr` : '';
+            modal.hidden = false;
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').hidden = true;
+        }
+
+        document.getElementById('closeModal').addEventListener('click', closeProductModal);
+        document.getElementById('productModal').addEventListener('click', (event) => {
+            if (event.target === event.currentTarget) {
+                closeProductModal();
+            }
+        });
+
         async function loadProducts() {
             const container = document.getElementById('products');
-            container.innerHTML = 'Laster produkter...';
+            container.textContent = '';
+            const loadingMessage = document.createElement('p');
+            loadingMessage.textContent = 'Laster produkter...';
+            container.appendChild(loadingMessage);
 
             try {
                 const response = await fetch('/products');
@@ -83,15 +146,17 @@
                     throw new Error('Feil ved henting av produkter');
                 }
                 const products = await response.json();
-                container.innerHTML = '';
+                container.textContent = '';
                 if (products.length === 0) {
-                    container.innerHTML = '<p>Ingen produkter funnet.</p>';
+                    const noProducts = document.createElement('p');
+                    noProducts.textContent = 'Ingen produkter funnet.';
+                    container.appendChild(noProducts);
                     return;
                 }
                 products.forEach(product => container.appendChild(createProductCard(product)));
             } catch (error) {
                 console.error(error);
-                container.innerHTML = '';
+                container.textContent = '';
                 fallbackProducts.forEach(product => container.appendChild(createProductCard(product)));
             }
         }

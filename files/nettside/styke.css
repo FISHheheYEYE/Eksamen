@@ -48,6 +48,7 @@ header p {
 }
 
 .product-card {
+    position: relative;
     background: #ffffff;
     border-radius: 16px;
     overflow: hidden;
@@ -55,6 +56,77 @@ header p {
     display: flex;
     flex-direction: column;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-remove-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: none;
+    background: rgba(15, 23, 42, 0.75);
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+}
+
+.product-remove-button:hover {
+    background: rgba(15, 23, 42, 0.95);
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 50;
+}
+
+.modal[hidden] {
+    display: none !important;
+}
+
+.modal-content {
+    width: min(560px, 100%);
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 24px 48px rgba(15, 23, 42, 0.16);
+    position: relative;
+    padding: 28px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 999px;
+    background: #e2e8f0;
+    color: #111827;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.modal-body {
+    display: grid;
+    gap: 16px;
+}
+
+.modal-body h2,
+.modal-body p {
+    margin: 0;
 }
 
 .product-card:hover {

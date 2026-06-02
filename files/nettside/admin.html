@@ -11,7 +11,7 @@
         <div class="page-header">
             <div>
                 <h1>Adminside</h1>
-                <p class="admin-note">Her kan du legge inn nye produkter for musikere, bordkort og blomster. Produktet sendes til backend via <code>/products</code>.</p>
+                <p class="admin-note">Her kan du legge inn nye produkter for musikere, bordkort og blomster.</p>
             </div>
             <a class="button" href="Index.html">Tilbake til produktsiden</a>
         </div>
@@ -47,6 +47,20 @@
 
         <div id="message" class="message" style="display:none"></div>
     </main>
+
+    <section class="products" id="products"></section>
+
+    <div id="productModal" class="modal" hidden>
+        <div class="modal-content">
+            <button id="closeModal" class="modal-close" type="button">×</button>
+            <div class="modal-body">
+                <h2 id="modalTitle"></h2>
+                <p id="modalCategory"></p>
+                <p id="modalDescription"></p>
+                <p id="modalPrice"></p>
+            </div>
+        </div>
+    </div>
 
     <script>
         const submitButton = document.getElementById('submitButton');
@@ -97,6 +111,165 @@
                 showMessage(error.message || 'Noe gikk galt', false);
             }
         });
+    </script>
+
+    <script>
+        const fallbackProducts = [
+            {
+                id: 1,
+                category: 'Musiker',
+                name: 'Live Musikk - Trio',
+                description: 'En energisk musikktrio som spiller pop, jazz og festlåter. Perfekt for bryllup og større selskaper.',
+                price: 4500,
+                image: 'https://via.placeholder.com/600x400?text=Musiker'
+            },
+            {
+                id: 2,
+                category: 'Bordkort',
+                name: 'Personlige bordkort',
+                description: 'Elegante bordkort med navn og bordnummer. Designet for å gi et personlig preg til selskapet.',
+                price: 85,
+                image: 'https://via.placeholder.com/600x400?text=Bordkort'
+            },
+            {
+                id: 3,
+                category: 'Blomster',
+                name: 'Bukett med sesongblomster',
+                description: 'Fargerik bukett med sesongens fineste blomster og grønt. Passer til borddekor eller gaver.',
+                price: 650,
+                image: 'https://via.placeholder.com/600x400?text=Blomster'
+            }
+        ];
+
+        async function deleteProduct(productId, card) {
+            try {
+                const response = await fetch(`/products/${productId}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Feil ved sletting av produkt');
+                }
+
+                card.remove();
+                showMessage('Produkt slettet', true);
+            } catch (error) {
+                console.error(error);
+                showMessage(error.message || 'Noe gikk galt ved sletting', false);
+            }
+        }
+
+        function createProductCard(product) {
+            const card = document.createElement('article');
+            card.className = 'product-card';
+
+            const removeButton = document.createElement('button');
+            removeButton.className = 'product-remove-button';
+            removeButton.type = 'button';
+            removeButton.textContent = '×';
+            removeButton.title = 'Slett produkt';
+            removeButton.addEventListener('click', () => deleteProduct(product.id, card));
+            card.appendChild(removeButton);
+
+            const img = document.createElement('img');
+            img.className = 'product-image';
+            img.src = product.image;
+            img.alt = product.name;
+            card.appendChild(img);
+
+            const content = document.createElement('div');
+            content.className = 'product-content';
+
+            const category = document.createElement('div');
+            category.className = 'product-category';
+            category.textContent = product.category;
+
+            const title = document.createElement('h2');
+            title.className = 'product-title';
+            title.textContent = product.name;
+
+            const description = document.createElement('p');
+            description.className = 'product-description';
+            description.textContent = product.description;
+
+            const footer = document.createElement('div');
+            footer.className = 'product-footer';
+
+            const price = document.createElement('div');
+            price.className = 'product-price';
+            price.textContent = `${product.price} kr`;
+
+            const actions = document.createElement('div');
+            actions.className = 'product-actions';
+
+            const button = document.createElement('button');
+            button.className = 'button';
+            button.type = 'button';
+            button.textContent = 'Vis mer';
+            button.addEventListener('click', () => openProductModal(product));
+
+            actions.appendChild(button);
+            footer.appendChild(price);
+            footer.appendChild(actions);
+            content.appendChild(category);
+            content.appendChild(title);
+            content.appendChild(description);
+            content.appendChild(footer);
+            card.appendChild(content);
+
+            return card;
+        }
+
+        async function loadProducts() {
+            const container = document.getElementById('products');
+            container.textContent = '';
+            const loadingMessage = document.createElement('p');
+            loadingMessage.textContent = 'Laster produkter...';
+            container.appendChild(loadingMessage);
+
+            try {
+                const response = await fetch('/products');
+                if (!response.ok) {
+                    throw new Error('Feil ved henting av produkter');
+                }
+                const products = await response.json();
+                container.textContent = '';
+                if (products.length === 0) {
+                    const noProducts = document.createElement('p');
+                    noProducts.textContent = 'Ingen produkter funnet.';
+                    container.appendChild(noProducts);
+                    return;
+                }
+                products.forEach(product => container.appendChild(createProductCard(product)));
+            } catch (error) {
+                console.error(error);
+                container.textContent = '';
+                fallbackProducts.forEach(product => container.appendChild(createProductCard(product)));
+            }
+        }
+
+        function openProductModal(product) {
+            const modal = document.getElementById('productModal');
+            document.getElementById('modalTitle').textContent = product.name || '';
+            document.getElementById('modalCategory').textContent = product.category ? `Kategori: ${product.category}` : '';
+            document.getElementById('modalDescription').textContent = product.description || '';
+            document.getElementById('modalPrice').textContent = product.price ? `Pris: ${product.price} kr` : '';
+            modal.hidden = false;
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').hidden = true;
+        }
+
+        document.getElementById('closeModal').addEventListener('click', closeProductModal);
+        document.getElementById('productModal').addEventListener('click', (event) => {
+            if (event.target === event.currentTarget) {
+                closeProductModal();
+            }
+        });
+
+        loadProducts();
     </script>
 </body>
 </html>
